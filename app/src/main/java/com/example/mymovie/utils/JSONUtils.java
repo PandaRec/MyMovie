@@ -9,6 +9,11 @@ import java.util.ArrayList;
 
 public class JSONUtils {
 
+    private static final String BASE_POSTER_URL = "https://image.tmdb.org/t/p/";
+    private static final String SMALL_POSTER_SIZE="w185";
+    private static final String BIG_POSTER_SIZE="w780";
+
+
     private static final String KEY_ID="id";
     private static final String KEY_RESULTS="results";
     private static final String KEY_BACKDROP_PATH = "backdrop_path";
@@ -32,12 +37,13 @@ public class JSONUtils {
                 String backdropPath = object.getString(KEY_BACKDROP_PATH);
                 String originalTitle = object.getString(KEY_ORIGINAL_TITLE);
                 String overview = object.getString(KEY_OVERVIEW);
-                String posterPath = object.getString(KEY_POSTER_PATH);
+                String posterPath = BASE_POSTER_URL+BIG_POSTER_SIZE+object.getString(KEY_POSTER_PATH);
+                String bigPosterPath = BASE_POSTER_URL+SMALL_POSTER_SIZE+object.getString(KEY_POSTER_PATH);
                 String title = object.getString(KEY_TITLE);
                 String releaseDate = object.getString(KEY_RELEASE_DATE);
                 int voteCount = object.getInt(KEY_VOTE_COUNT);
                 double voteAverage = object.getDouble(KEY_VOTE_AVERAGE);
-                Movie movie = new Movie(id,backdropPath,originalTitle,overview,posterPath,title,releaseDate,voteCount,voteAverage);
+                Movie movie = new Movie(id,backdropPath,originalTitle,overview,posterPath,bigPosterPath,title,releaseDate,voteCount,voteAverage);
                 movies.add(movie);
             }
         }catch (Exception e){}
