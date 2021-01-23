@@ -2,6 +2,11 @@ package com.example.mymovie;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +18,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mymovie.data.MainViewModel;
 import com.example.mymovie.data.Movie;
 import com.example.mymovie.utils.JSONUtils;
 import com.example.mymovie.utils.NetworkUtils;
@@ -20,6 +26,7 @@ import com.example.mymovie.utils.NetworkUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -27,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewPopularity;
     private TextView textViewTopRated;
     private SwitchCompat switchCompat;
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +45,12 @@ public class MainActivity extends AppCompatActivity {
         textViewPopularity = findViewById(R.id.textViewPopularity);
         textViewTopRated = findViewById(R.id.textViewTopRated);
         switchCompat = findViewById(R.id.switchSortBy);
+        viewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainViewModel.class);
+
 
         movieAdapter = new MovieAdapter();
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+
 
         switchCompat.setChecked(true);
 
@@ -67,8 +78,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
+        LiveData<List<Movie>> moviesFromDB = viewModel.getMovies();
+        moviesFromDB.observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+                movieAdapter.setMovies(movies);
+            }
+        });
 
 
     }
@@ -113,8 +129,18 @@ public class MainActivity extends AppCompatActivity {
             textViewTopRated.setPaintFlags(0);
 
         }
+        downloadData(methodOfSort,1);
+
+    }
+
+    private void downloadData(int methodOfSort, int page){
         JSONObject tempJson = NetworkUtils.getJSONFromNetwork(methodOfSort,1);
         ArrayList<Movie> movies = JSONUtils.getMoviesFromJSON(tempJson);
-        movieAdapter.setMovies(movies);
+        if (movies!=null && movies.size()>0){
+            viewModel.deleteAllMovies();
+            for (Movie movie:movies){
+                viewModel.insertMovie(movie);
+            }
+        }
     }
 }
