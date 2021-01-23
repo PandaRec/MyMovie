@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/black">
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
+        android:theme="@style/MySwitchStyle"
         android:id="@+id/switchSortBy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,6 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/most_popular"
+        android:textColor="@color/white"
+        android:onClick="onClickSortByPopularityPressed"
         app:layout_constraintBottom_toBottomOf="@+id/switchSortBy"
         app:layout_constraintEnd_toStartOf="@+id/switchSortBy"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/top_rated"
+        android:textColor="@color/white"
+        android:onClick="onClickSortByTopRatedPressed"
         app:layout_constraintBottom_toBottomOf="@+id/switchSortBy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/switchSortBy"

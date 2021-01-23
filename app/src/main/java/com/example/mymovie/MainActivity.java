@@ -1,12 +1,16 @@
 package com.example.mymovie;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.example.mymovie.data.Movie;
 import com.example.mymovie.utils.JSONUtils;
@@ -18,19 +22,33 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    MovieAdapter movieAdapter;
+    private MovieAdapter movieAdapter;
+    private TextView textViewPopularity;
+    private TextView textViewTopRated;
+    private SwitchCompat switchCompat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         recyclerView = findViewById(R.id.recycleViewPosters);
+        textViewPopularity = findViewById(R.id.textViewPopularity);
+        textViewTopRated = findViewById(R.id.textViewTopRated);
+        switchCompat = findViewById(R.id.switchSortBy);
+
         movieAdapter = new MovieAdapter();
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
 
-        JSONObject tempJson = NetworkUtils.getJSONFromNetwork(NetworkUtils.POPULARITY,1);
-        ArrayList<Movie> movies = JSONUtils.getMoviesFromJSON(tempJson);
-        movieAdapter.setMovies(movies);
+        switchCompat.setChecked(true);
+
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setMethodOfSort(isChecked);
+            }
+        });
+        switchCompat.setChecked(false);
         recyclerView.setAdapter(movieAdapter);
 
 
@@ -38,9 +56,50 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
 
+    public void onClickSortByPopularityPressed(View view) {
+        setMethodOfSort(false);
+        switchCompat.setChecked(false);
+        textViewPopularity.setTextColor(getResources().getColor(R.color.gray));
+        textViewTopRated.setTextColor(getResources().getColor(R.color.white));
 
+        textViewPopularity.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        textViewTopRated.setPaintFlags(0);
+    }
 
+    public void onClickSortByTopRatedPressed(View view) {
+        setMethodOfSort(true);
+        switchCompat.setChecked(true);
+        textViewTopRated.setTextColor(getResources().getColor(R.color.gray));
+        textViewPopularity.setTextColor(getResources().getColor(R.color.white));
 
+        textViewTopRated.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        textViewPopularity.setPaintFlags(0);
+
+    }
+
+    private void setMethodOfSort(boolean isTopRated){
+        int methodOfSort;
+        if(isTopRated){
+            methodOfSort = NetworkUtils.VOTE_AVERAGE;
+            textViewTopRated.setTextColor(getResources().getColor(R.color.gray));
+            textViewPopularity.setTextColor(getResources().getColor(R.color.white));
+
+            textViewTopRated.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+            textViewPopularity.setPaintFlags(0);
+
+        }else {
+            methodOfSort = NetworkUtils.POPULARITY;
+            textViewPopularity.setTextColor(getResources().getColor(R.color.gray));
+            textViewTopRated.setTextColor(getResources().getColor(R.color.white));
+
+            textViewPopularity.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+            textViewTopRated.setPaintFlags(0);
+
+        }
+        JSONObject tempJson = NetworkUtils.getJSONFromNetwork(methodOfSort,1);
+        ArrayList<Movie> movies = JSONUtils.getMoviesFromJSON(tempJson);
+        movieAdapter.setMovies(movies);
     }
 }
