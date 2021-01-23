@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mymovie.data.Movie;
 import com.example.mymovie.utils.JSONUtils;
@@ -50,6 +51,20 @@ public class MainActivity extends AppCompatActivity {
         });
         switchCompat.setChecked(false);
         recyclerView.setAdapter(movieAdapter);
+
+        movieAdapter.setOnPosterClickListener(new MovieAdapter.OnPosterClickListener() {
+            @Override
+            public void onPosterClick(int position) {
+                Toast.makeText(MainActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        movieAdapter.setOnReachEndListener(new MovieAdapter.OnReachEndListener() {
+            @Override
+            public void onReachEnd() {
+                Toast.makeText(MainActivity.this, "Reached", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
