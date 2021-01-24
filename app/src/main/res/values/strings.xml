@@ -3,4 +3,13 @@
     <string name="poster_image_description">Poster image</string>
     <string name="most_popular">Самые популярные</string>
     <string name="top_rated">Наиболее рейтиноговые</string>
+    <string name="item_favourite">Избранное</string>
+    <string name="item_main">Главная</string>
+    <string name="label_overview">Описание:</string>
+    <string name="label_release_date">Дата релиза:</string>
+    <string name="label_rating">Рейтинг:</string>
+    <string name="label_original_title">Оригинальное название:</string>
+    <string name="label_title">Название:</string>
+    <string name="description_big_poster">Большой постер</string>
+    <string name="description_favorite_image_view">кликабельное изображение для добавления/удаления в/из избраннго(ое)</string>
 </resources>
