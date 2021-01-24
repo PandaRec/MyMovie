@@ -3,6 +3,7 @@ package com.example.mymovie.utils;
 import android.util.Log;
 
 import com.example.mymovie.data.Movie;
+import com.example.mymovie.data.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,11 +12,18 @@ import java.util.ArrayList;
 
 public class JSONUtils {
 
+    //for trailers
+    private static final String KEY_KEY = "key";
+    private static final String KEY_NAME="name";
+    private static final String BASE_YOUTUBE_URL="https://www.youtube.com/watch?v=";
+
+    //for reviews
+
+
+    //for movies
     private static final String BASE_POSTER_URL = "https://image.tmdb.org/t/p/";
     private static final String SMALL_POSTER_SIZE="w185";
     private static final String BIG_POSTER_SIZE="w780";
-
-
     private static final String KEY_ID="id";
     private static final String KEY_RESULTS="results";
     private static final String KEY_BACKDROP_PATH = "backdrop_path";
@@ -36,6 +44,7 @@ public class JSONUtils {
             for(int i =0;i<jsonArray.length();i++){
                 JSONObject object = jsonArray.getJSONObject(i);
                 int id = object.getInt(KEY_ID);
+                Log.i("my_id",String.format("%s",id));
                 String backdropPath = object.getString(KEY_BACKDROP_PATH);
                 String originalTitle = object.getString(KEY_ORIGINAL_TITLE);
                 String overview = object.getString(KEY_OVERVIEW);
@@ -50,6 +59,25 @@ public class JSONUtils {
             }
         }catch (Exception e){}
         return movies;
+    }
+
+    public static ArrayList<Trailer> getTrailersFromJSON(JSONObject jsonObject){
+        if(jsonObject==null){
+            return null;
+        }
+        ArrayList<Trailer> trailers = new ArrayList<>();
+
+        try{
+            JSONArray jsonArray = jsonObject.getJSONArray(KEY_RESULTS);
+            for(int i =0;i<jsonArray.length();i++){
+                JSONObject jsonObjectTrailer = jsonArray.getJSONObject(i);
+                String key =  BASE_YOUTUBE_URL+jsonObjectTrailer.getString(KEY_KEY);
+                String name =jsonObjectTrailer.getString(KEY_NAME);
+                trailers.add(new Trailer(key,name));
+            }
+
+        }catch (Exception e){}
+        return trailers;
     }
 
 

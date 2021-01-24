@@ -14,6 +14,15 @@ import java.nio.channels.AsynchronousChannelGroup;
 import java.util.concurrent.ExecutionException;
 
 public class NetworkUtils {
+    //for trailers
+    private static final String BASE_URL_TRAILERS="https://api.themoviedb.org/3/movie/%s/videos";
+
+
+    //for reviews
+
+
+
+    //for movies
     private static final String BASE_URL = "https://api.themoviedb.org/3/discover/movie";
 
     private static final String PARAMS_API_KEY = "api_key";
@@ -49,6 +58,16 @@ public class NetworkUtils {
         return url;
     }
 
+    private static URL buildUrlForTrailer(int idOfMovie){
+        Uri uri = Uri.parse(String.format(BASE_URL_TRAILERS,idOfMovie)).buildUpon()
+                .appendQueryParameter(PARAMS_API_KEY,API_KEY)
+                .appendQueryParameter(PARAMS_LANGUAGE,LANGUAGE).build();
+        try{
+            return new URL(uri.toString());
+        }catch (Exception e){}
+        return null;
+    }
+
     public static JSONObject getJSONFromNetwork(int sortBy,int page){
         JSONObject result = null;
         URL url = buildURL(sortBy,page);
@@ -57,6 +76,15 @@ public class NetworkUtils {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        return result;
+    }
+
+    public static JSONObject getJSONForTrailer(int idOfMovie){
+        JSONObject result = null;
+        URL url = buildUrlForTrailer(idOfMovie);
+        try{
+            result = new JSONLoadTask().execute(url).get();
+        }catch (Exception e){}
         return result;
     }
 

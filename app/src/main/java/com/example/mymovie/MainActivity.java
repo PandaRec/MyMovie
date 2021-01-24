@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewTopRated;
     private SwitchCompat switchCompat;
     private MainViewModel viewModel;
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

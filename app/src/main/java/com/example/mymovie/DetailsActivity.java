@@ -2,6 +2,8 @@ package com.example.mymovie;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +15,14 @@ import android.widget.Toast;
 import com.example.mymovie.data.FavoriteMovie;
 import com.example.mymovie.data.MainViewModel;
 import com.example.mymovie.data.Movie;
+import com.example.mymovie.data.Trailer;
+import com.example.mymovie.utils.JSONUtils;
+import com.example.mymovie.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -24,6 +33,9 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView textViewRating;
     private ImageView imageViewBigPoster;
     private ImageView imageViewFavourite;
+
+    private RecyclerView recyclerViewTrailers;
+    private TrailerAdapter trailerAdapter;
 
     private int id;
     private Movie movie;
@@ -43,6 +55,13 @@ public class DetailsActivity extends AppCompatActivity {
         textViewReleaseDate = findViewById(R.id.textViewReleaseDate);
         imageViewBigPoster = findViewById(R.id.imageViewBigPoster);
         imageViewFavourite = findViewById(R.id.imageViewFavourite);
+        recyclerViewTrailers = findViewById(R.id.recycleViewTrailers);
+
+        trailerAdapter = new TrailerAdapter();
+        recyclerViewTrailers.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+
+
+
 
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainViewModel.class);
         Intent intent = getIntent();
@@ -62,6 +81,12 @@ public class DetailsActivity extends AppCompatActivity {
         textViewOriginalTitle.setText(movie.getOriginalTitle());
 
         setFavourite();
+
+        JSONObject json = NetworkUtils.getJSONForTrailer(id);
+        ArrayList<Trailer> trailers = JSONUtils.getTrailersFromJSON(json);
+
+        trailerAdapter.setTrailers(trailers);
+        recyclerViewTrailers.setAdapter(trailerAdapter);
 
     }
 
