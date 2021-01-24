@@ -1,5 +1,6 @@
 package com.example.mymovie;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -28,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -36,6 +41,29 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewTopRated;
     private SwitchCompat switchCompat;
     private MainViewModel viewModel;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.menu_main:
+                Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_favourite:
+                Intent intent1 = new Intent(this,FavouriteActivity.class);
+                startActivity(intent1);
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
