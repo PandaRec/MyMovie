@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
@@ -66,7 +67,12 @@ public class MainActivity extends AppCompatActivity {
         movieAdapter.setOnPosterClickListener(new MovieAdapter.OnPosterClickListener() {
             @Override
             public void onPosterClick(int position) {
-                Toast.makeText(MainActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+                int id = movieAdapter.getMovies().get(position).getId();
+                //Toast.makeText(MainActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this,DetailsActivity.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+
             }
         });
 

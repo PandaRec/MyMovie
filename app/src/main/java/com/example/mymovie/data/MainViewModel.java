@@ -12,15 +12,24 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
     private LiveData<List<Movie>> movies;
+    private LiveData<List<FavoriteMovie>> favouriteMovies;
+
     private static MovieDatabase database;
+
+
     public MainViewModel(@NonNull Application application) {
         super(application);
         database = MovieDatabase.getInstance(getApplication());
         movies = database.movieDao().getAllMovies();
+        favouriteMovies = database.movieDao().getAllFavouriteMovies();
     }
 
     public  LiveData<List<Movie>> getMovies() {
         return movies;
+    }
+
+    public LiveData<List<FavoriteMovie>> getFavouriteMovies() {
+        return favouriteMovies;
     }
 
     public Movie getMovieById(int movieId){
@@ -37,6 +46,25 @@ public class MainViewModel extends AndroidViewModel {
     }
     public void deleteAllMovies(){
         new DeleteAllMovies().execute();
+    }
+
+    //there need create methods for favorite
+    public FavoriteMovie getFavouriteMovieById(int favouriteMovieId){
+        try{
+            return new GetFavouriteMovieByIdTask().execute(favouriteMovieId).get();
+        }catch (Exception e){}
+        return null;
+    }
+    public void insertFavouriteMovie(FavoriteMovie favoriteMovie){
+        new InsertFavouriteMovieTask().execute(favoriteMovie);
+    }
+
+    public void deleteFavouriteMovie(FavoriteMovie favoriteMovie){
+        new DeleteFavouriteMovieTask().execute(favoriteMovie);
+    }
+
+    public void deleteAllFavouriteMovies(){
+        new DeleteAllFavouriteMoviesTask().execute();
     }
 
     private static class GetMovieByIdTask extends AsyncTask<Integer,Void,Movie>{
@@ -73,6 +101,43 @@ public class MainViewModel extends AndroidViewModel {
         @Override
         protected Void doInBackground(Void... voids) {
             database.movieDao().deleteAllMovies();
+            return null;
+        }
+    }
+    private static class GetFavouriteMovieByIdTask extends AsyncTask<Integer,Void,FavoriteMovie>{
+        @Override
+        protected FavoriteMovie doInBackground(Integer... integers) {
+            if(integers!=null && integers.length>0){
+                return database.movieDao().getFavouriteMovieById(integers[0]);
+            }
+            return null;
+        }
+    }
+
+    private static class InsertFavouriteMovieTask extends AsyncTask<FavoriteMovie,Void,Void>{
+        @Override
+        protected Void doInBackground(FavoriteMovie... favoriteMovies) {
+            if(favoriteMovies!=null && favoriteMovies.length>0){
+                database.movieDao().insertFavouriteMovie(favoriteMovies[0]);
+            }
+            return null;
+        }
+    }
+
+    private static class DeleteFavouriteMovieTask extends AsyncTask<FavoriteMovie,Void,Void>{
+        @Override
+        protected Void doInBackground(FavoriteMovie... favoriteMovies) {
+            if(favoriteMovies!=null && favoriteMovies.length>0){
+                database.movieDao().deleteFavouriteMovie(favoriteMovies[0]);
+            }
+            return null;
+        }
+    }
+
+    private static class DeleteAllFavouriteMoviesTask extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            database.movieDao().deleteAllFavouriteMovies();
             return null;
         }
     }

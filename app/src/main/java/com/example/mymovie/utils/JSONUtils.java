@@ -1,5 +1,7 @@
 package com.example.mymovie.utils;
 
+import android.util.Log;
+
 import com.example.mymovie.data.Movie;
 
 import org.json.JSONArray;
@@ -37,8 +39,8 @@ public class JSONUtils {
                 String backdropPath = object.getString(KEY_BACKDROP_PATH);
                 String originalTitle = object.getString(KEY_ORIGINAL_TITLE);
                 String overview = object.getString(KEY_OVERVIEW);
-                String posterPath = BASE_POSTER_URL+BIG_POSTER_SIZE+object.getString(KEY_POSTER_PATH);
-                String bigPosterPath = BASE_POSTER_URL+SMALL_POSTER_SIZE+object.getString(KEY_POSTER_PATH);
+                String posterPath = BASE_POSTER_URL+SMALL_POSTER_SIZE+object.getString(KEY_POSTER_PATH);
+                String bigPosterPath = BASE_POSTER_URL+BIG_POSTER_SIZE+object.getString(KEY_POSTER_PATH);
                 String title = object.getString(KEY_TITLE);
                 String releaseDate = object.getString(KEY_RELEASE_DATE);
                 int voteCount = object.getInt(KEY_VOTE_COUNT);
