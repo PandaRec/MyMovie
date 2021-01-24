@@ -2,6 +2,7 @@ package com.example.mymovie.utils;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -19,6 +20,7 @@ public class NetworkUtils {
 
 
     //for reviews
+    private static final String BASE_URL_REVIEWS ="https://api.themoviedb.org/3/movie/%s/reviews";
 
 
 
@@ -60,10 +62,20 @@ public class NetworkUtils {
 
     private static URL buildUrlForTrailer(int idOfMovie){
         Uri uri = Uri.parse(String.format(BASE_URL_TRAILERS,idOfMovie)).buildUpon()
-                .appendQueryParameter(PARAMS_API_KEY,API_KEY)
-                .appendQueryParameter(PARAMS_LANGUAGE,LANGUAGE).build();
+                .appendQueryParameter(PARAMS_API_KEY,API_KEY).build();
         try{
             return new URL(uri.toString());
+        }catch (Exception e){}
+        return null;
+    }
+
+    private static URL buildUrlForReview(int idOfMovie){
+        Uri uri = Uri.parse(String.format(BASE_URL_REVIEWS,idOfMovie)).buildUpon()
+                .appendQueryParameter(PARAMS_API_KEY,API_KEY)
+                .build();
+        try{
+            return new URL(uri.toString());
+
         }catch (Exception e){}
         return null;
     }
@@ -82,6 +94,15 @@ public class NetworkUtils {
     public static JSONObject getJSONForTrailer(int idOfMovie){
         JSONObject result = null;
         URL url = buildUrlForTrailer(idOfMovie);
+        try{
+            result = new JSONLoadTask().execute(url).get();
+        }catch (Exception e){}
+        return result;
+    }
+
+    public static JSONObject getJSONForReview(int idOfMovie){
+        JSONObject result = null;
+        URL url = buildUrlForReview(idOfMovie);
         try{
             result = new JSONLoadTask().execute(url).get();
         }catch (Exception e){}
@@ -107,6 +128,7 @@ public class NetworkUtils {
                     stringBuilder.append(line);
                     line = bufferedReader.readLine();
                 }
+                Log.i("my_json",stringBuilder.toString());
                 result = new JSONObject(stringBuilder.toString());
             } catch (Exception e) {
                 e.printStackTrace();

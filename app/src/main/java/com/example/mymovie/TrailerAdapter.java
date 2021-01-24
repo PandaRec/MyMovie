@@ -34,8 +34,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     @Override
     public void onBindViewHolder(@NonNull TrailerViewHolder holder, int position) {
         Trailer trailer = trailers.get(position);
-        textViewName.setText(trailer.getName());
-        textViewTrailerLink.setText(trailer.getKey());
+        holder.textViewName.setText(trailer.getName());
+        holder.textViewTrailerLink.setText(trailer.getKey());
     }
 
     @Override
@@ -43,10 +43,12 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         return trailers.size();
     }
 
-    private TextView textViewName;
-    private TextView textViewTrailerLink;
+
 
     public class TrailerViewHolder extends RecyclerView.ViewHolder{
+        private TextView textViewName;
+        private TextView textViewTrailerLink;
+
         public TrailerViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.textViewName);

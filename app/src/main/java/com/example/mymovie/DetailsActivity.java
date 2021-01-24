@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.mymovie.data.FavoriteMovie;
 import com.example.mymovie.data.MainViewModel;
 import com.example.mymovie.data.Movie;
+import com.example.mymovie.data.Review;
 import com.example.mymovie.data.Trailer;
 import com.example.mymovie.utils.JSONUtils;
 import com.example.mymovie.utils.NetworkUtils;
@@ -37,6 +38,9 @@ public class DetailsActivity extends AppCompatActivity {
     private RecyclerView recyclerViewTrailers;
     private TrailerAdapter trailerAdapter;
 
+    private RecyclerView recyclerViewReview;
+    private ReviewAdapter reviewAdapter;
+
     private int id;
     private Movie movie;
     private FavoriteMovie favoriteMovie;
@@ -56,9 +60,13 @@ public class DetailsActivity extends AppCompatActivity {
         imageViewBigPoster = findViewById(R.id.imageViewBigPoster);
         imageViewFavourite = findViewById(R.id.imageViewFavourite);
         recyclerViewTrailers = findViewById(R.id.recycleViewTrailers);
+        recyclerViewReview = findViewById(R.id.recycleViewReviews);
 
         trailerAdapter = new TrailerAdapter();
+        reviewAdapter = new ReviewAdapter();
         recyclerViewTrailers.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        recyclerViewReview.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+
 
 
 
@@ -85,8 +93,14 @@ public class DetailsActivity extends AppCompatActivity {
         JSONObject json = NetworkUtils.getJSONForTrailer(id);
         ArrayList<Trailer> trailers = JSONUtils.getTrailersFromJSON(json);
 
+        JSONObject jsonReviews = NetworkUtils.getJSONForReview(id);
+        ArrayList<Review> reviews = JSONUtils.getReviewsFromJson(jsonReviews);
+
         trailerAdapter.setTrailers(trailers);
         recyclerViewTrailers.setAdapter(trailerAdapter);
+
+        reviewAdapter.setReviews(reviews);
+        recyclerViewReview.setAdapter(reviewAdapter);
 
     }
 

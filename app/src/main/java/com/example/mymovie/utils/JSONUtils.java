@@ -3,6 +3,7 @@ package com.example.mymovie.utils;
 import android.util.Log;
 
 import com.example.mymovie.data.Movie;
+import com.example.mymovie.data.Review;
 import com.example.mymovie.data.Trailer;
 
 import org.json.JSONArray;
@@ -18,7 +19,8 @@ public class JSONUtils {
     private static final String BASE_YOUTUBE_URL="https://www.youtube.com/watch?v=";
 
     //for reviews
-
+    private static final String KEY_AUTHOR="author";
+    private static final String KEY_CONTENT="content";
 
     //for movies
     private static final String BASE_POSTER_URL = "https://image.tmdb.org/t/p/";
@@ -78,6 +80,28 @@ public class JSONUtils {
 
         }catch (Exception e){}
         return trailers;
+    }
+
+    public static ArrayList<Review> getReviewsFromJson(JSONObject jsonObject){
+        if(jsonObject==null){
+            return null;
+        }
+
+        ArrayList<Review> reviews = new ArrayList<>();
+
+        try {
+            JSONArray jsonArray = jsonObject.getJSONArray(KEY_RESULTS);
+
+            for(int i =0;i<jsonArray.length();i++){
+                JSONObject object = jsonArray.getJSONObject(i);
+                String author = object.getString(KEY_AUTHOR);
+                String content = object.getString(KEY_CONTENT);
+                reviews.add(new Review(author,content));
+            }
+
+        }catch (Exception e){ Log.i("my_exception",e.toString());}
+        Log.i("my_size",""+reviews.size());
+        return reviews;
     }
 
 

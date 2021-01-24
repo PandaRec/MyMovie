@@ -11,22 +11,20 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewName"
+        android:id="@+id/textViewAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp"/>
 
     <TextView
-        android:id="@+id/textViewTrailer"
+        android:id="@+id/textViewContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAuthor"
+        android:layout_margin="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.cardview.widget.CardView>
