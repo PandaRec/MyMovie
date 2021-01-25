@@ -48,7 +48,6 @@ public class MainViewModel extends AndroidViewModel {
         new DeleteAllMovies().execute();
     }
 
-    //there need create methods for favorite
     public FavoriteMovie getFavouriteMovieById(int favouriteMovieId){
         try{
             return new GetFavouriteMovieByIdTask().execute(favouriteMovieId).get();
