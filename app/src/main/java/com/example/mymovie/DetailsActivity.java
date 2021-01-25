@@ -6,12 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mymovie.adapters.ReviewAdapter;
+import com.example.mymovie.adapters.TrailerAdapter;
 import com.example.mymovie.data.FavoriteMovie;
 import com.example.mymovie.data.MainViewModel;
 import com.example.mymovie.data.Movie;
@@ -64,6 +67,13 @@ public class DetailsActivity extends AppCompatActivity {
 
         trailerAdapter = new TrailerAdapter();
         reviewAdapter = new ReviewAdapter();
+        trailerAdapter.setOnCLickTrailerListener(new TrailerAdapter.OnCLickTrailerListener() {
+            @Override
+            public void onTrailerClick(String url) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+            }
+        });
         recyclerViewTrailers.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recyclerViewReview.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
 

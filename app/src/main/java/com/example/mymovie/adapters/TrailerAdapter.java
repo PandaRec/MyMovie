@@ -1,4 +1,4 @@
-package com.example.mymovie;
+package com.example.mymovie.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +8,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mymovie.R;
 import com.example.mymovie.data.Trailer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
     private ArrayList<Trailer> trailers;
+
+    private OnCLickTrailerListener onCLickTrailerListener;
+
+    public void setOnCLickTrailerListener(OnCLickTrailerListener onCLickTrailerListener) {
+        this.onCLickTrailerListener = onCLickTrailerListener;
+    }
+
+    public interface OnCLickTrailerListener{
+        void onTrailerClick(String url);
+    }
 
     public ArrayList<Trailer> getTrailers() {
         return trailers;
@@ -22,6 +32,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     public void setTrailers(ArrayList<Trailer> trailers) {
         this.trailers = trailers;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -34,8 +45,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     @Override
     public void onBindViewHolder(@NonNull TrailerViewHolder holder, int position) {
         Trailer trailer = trailers.get(position);
-        holder.textViewName.setText(trailer.getName());
-        holder.textViewTrailerLink.setText(trailer.getKey());
+        holder.textViewNameOfTrailer.setText(trailer.getName());
     }
 
     @Override
@@ -46,13 +56,19 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
 
     public class TrailerViewHolder extends RecyclerView.ViewHolder{
-        private TextView textViewName;
-        private TextView textViewTrailerLink;
+        private TextView textViewNameOfTrailer;
 
         public TrailerViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.textViewName);
-            textViewTrailerLink = itemView.findViewById(R.id.textViewTrailer);
+            textViewNameOfTrailer = itemView.findViewById(R.id.textViewTrailer);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(onCLickTrailerListener!=null)
+                            onCLickTrailerListener.onTrailerClick(trailers.get(getAdapterPosition()).getKey());
+                    }
+                });
+
         }
     }
 }
