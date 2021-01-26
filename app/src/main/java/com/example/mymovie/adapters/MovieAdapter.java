@@ -21,6 +21,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private OnPosterClickListener onPosterClickListener;
     private OnReachEndListener onReachEndListener;
 
+
     public MovieAdapter(){
         movies = new ArrayList<>();
     }
@@ -39,6 +40,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public interface OnReachEndListener{
         void onReachEnd();
     }
+
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        if(onReachEndListener!=null && position>movies.size()-2){
+        if(movies.size()>=20 && onReachEndListener!=null && position>movies.size()-2){
             onReachEndListener.onReachEnd();
         }
 
@@ -90,5 +92,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
+    }
+
+    public void clear(){
+        this.movies.clear();
     }
 }
