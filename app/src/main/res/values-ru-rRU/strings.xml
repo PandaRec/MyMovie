@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyMovie</string>
+    <string name="poster_image_description">Постер</string>
+    <string name="most_popular">Самые популярные</string>
+    <string name="top_rated">Наиболее рейтиноговые</string>
+    <string name="item_favourite">Избранное</string>
+    <string name="item_main">Главная</string>
+    <string name="label_overview">Описание:</string>
+    <string name="label_release_date">Дата релиза:</string>
+    <string name="label_rating">Рейтинг:</string>
+    <string name="label_original_title">Оригинальное название:</string>
+    <string name="label_title">Название:</string>
+    <string name="description_big_poster">Большой постер</string>
+    <string name="description_favorite_image_view">кликабельное изображение для добавления/удаления в/из избраннго(ое)</string>
+    <string name="description_image_view_play">изображение кнопки проигрования</string>
+    <string name="add_to_favourite">Добавлено в избранное</string>
+    <string name="remove_from_favorite">Удалено из избранного</string>
+</resources>

@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject> {
     private RecyclerView recyclerView;
@@ -46,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private SwitchCompat switchCompat;
     private MainViewModel viewModel;
     private ProgressBar progressBar;
-    private ScrollView scrollView;
 
     private LoaderManager loaderManager;
     private static final int LOADER_ID = 1;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static int methodOfSort;
 
     private static boolean isLoading=false;
+    private static String language;
 
 
     @Override
@@ -85,20 +87,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loaderManager = LoaderManager.getInstance(this);
+        language = Locale.getDefault().getLanguage();
 
         recyclerView = findViewById(R.id.recycleViewPosters);
         textViewPopularity = findViewById(R.id.textViewPopularity);
         textViewTopRated = findViewById(R.id.textViewTopRated);
         switchCompat = findViewById(R.id.switchSortBy);
         progressBar = findViewById(R.id.progressBarLoading);
-        scrollView = findViewById(R.id.scrollViewInfo);
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainViewModel.class);
 
 
         movieAdapter = new MovieAdapter();
         recyclerView.setLayoutManager(new GridLayoutManager(this, getColumnCount()));
 
-        scrollView.smoothScrollTo(0,0);
 
 
         switchCompat.setChecked(true);
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void downloadData(int methodOfSort, int page) {
-        URL url = NetworkUtils.buildURL(methodOfSort, page);
+        URL url = NetworkUtils.buildURL(methodOfSort, page,language);
         Bundle bundle = new Bundle();
         bundle.putString("url", url.toString());
         loaderManager.restartLoader(LOADER_ID, bundle, this);
@@ -222,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             for (Movie movie : movies) {
                 viewModel.insertMovie(movie);
             }
-            movieAdapter.setMovies(movies);
+            movieAdapter.addMovies(movies);
             page++;
         }
         isLoading = false;
@@ -240,5 +241,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = (int)(displayMetrics.widthPixels/displayMetrics.density);
         return Math.max(width / 185, 2);
+    }
+
+    public static String getLanguage() {
+        return language;
     }
 }

@@ -1,15 +1,18 @@
 <resources>
     <string name="app_name">MyMovie</string>
     <string name="poster_image_description">Poster image</string>
-    <string name="most_popular">Самые популярные</string>
-    <string name="top_rated">Наиболее рейтиноговые</string>
-    <string name="item_favourite">Избранное</string>
-    <string name="item_main">Главная</string>
-    <string name="label_overview">Описание:</string>
-    <string name="label_release_date">Дата релиза:</string>
-    <string name="label_rating">Рейтинг:</string>
-    <string name="label_original_title">Оригинальное название:</string>
-    <string name="label_title">Название:</string>
-    <string name="description_big_poster">Большой постер</string>
-    <string name="description_favorite_image_view">кликабельное изображение для добавления/удаления в/из избраннго(ое)</string>
+    <string name="most_popular">Most pupular</string>
+    <string name="top_rated">Top rated</string>
+    <string name="item_favourite">Favourite</string>
+    <string name="item_main">Main</string>
+    <string name="label_overview">Description:</string>
+    <string name="label_release_date">Release date:</string>
+    <string name="label_rating">Rating:</string>
+    <string name="label_original_title">Original title:</string>
+    <string name="label_title">Title:</string>
+    <string name="description_big_poster">Big poster</string>
+    <string name="description_favorite_image_view">Add/remove favourite</string>
+    <string name="description_image_view_play">Play image</string>
+    <string name="add_to_favourite">Added to favourite</string>
+    <string name="remove_from_favorite">Removed from favourite</string>
 </resources>

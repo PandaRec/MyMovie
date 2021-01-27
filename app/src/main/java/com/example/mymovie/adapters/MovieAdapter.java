@@ -50,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        if(movies.size()>=20 && onReachEndListener!=null && position>movies.size()-2){
+        if(movies.size()>=20 && onReachEndListener!=null && position>movies.size()-4){
             onReachEndListener.onReachEnd();
         }
 
@@ -96,5 +96,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     public void clear(){
         this.movies.clear();
+        notifyDataSetChanged();
     }
 }

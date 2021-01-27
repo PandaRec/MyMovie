@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView textViewRating;
     private ImageView imageViewBigPoster;
     private ImageView imageViewFavourite;
+    private ScrollView scrollView;
+
 
     private RecyclerView recyclerViewTrailers;
     private TrailerAdapter trailerAdapter;
@@ -64,6 +67,8 @@ public class DetailsActivity extends AppCompatActivity {
         imageViewFavourite = findViewById(R.id.imageViewFavourite);
         recyclerViewTrailers = findViewById(R.id.recycleViewTrailers);
         recyclerViewReview = findViewById(R.id.recycleViewReviews);
+        scrollView = findViewById(R.id.scrollViewInfo);
+        scrollView.smoothScrollTo(0,0);
 
         trailerAdapter = new TrailerAdapter();
         reviewAdapter = new ReviewAdapter();
@@ -100,10 +105,10 @@ public class DetailsActivity extends AppCompatActivity {
 
         setFavourite();
 
-        JSONObject json = NetworkUtils.getJSONForTrailer(id);
+        JSONObject json = NetworkUtils.getJSONForTrailer(id,MainActivity.getLanguage());
         ArrayList<Trailer> trailers = JSONUtils.getTrailersFromJSON(json);
 
-        JSONObject jsonReviews = NetworkUtils.getJSONForReview(id);
+        JSONObject jsonReviews = NetworkUtils.getJSONForReview(id,MainActivity.getLanguage());
         ArrayList<Review> reviews = JSONUtils.getReviewsFromJson(jsonReviews);
 
         trailerAdapter.setTrailers(trailers);
@@ -117,11 +122,11 @@ public class DetailsActivity extends AppCompatActivity {
     public void onClickFavouriteStateChange(View view) {
         if(favoriteMovie==null){
             viewModel.insertFavouriteMovie(new FavoriteMovie(movie));
-            Toast.makeText(this, "Добавлено", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.add_to_favourite), Toast.LENGTH_SHORT).show();
 
         }else {
             viewModel.deleteFavouriteMovie(new FavoriteMovie(movie));
-            Toast.makeText(this, "Удалено", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.remove_from_favorite), Toast.LENGTH_SHORT).show();
 
         }
         setFavourite();
